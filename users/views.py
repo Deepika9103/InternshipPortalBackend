@@ -221,19 +221,19 @@ class LinkedIn(APIView):
                         try:
                             link = content.find('a', {'class': 'base-card__full-link absolute top-0 right-0 bottom-0 left-0 p-0 z-[2]'}).get('href')
                         except:
-                            link = 'information unavailable'
+                            link = None
                         
                         try:
                             title = content.find('h3', class_='base-search-card__title').text.replace('\n      ', '')
                             cleanedtitle = re.sub(r'\s+', ' ', title)
                         except:
-                            cleanedtitle = 'information unavailable'
+                            cleanedtitle = None
                         
                         try:
                             company = content.find('a', class_='hidden-nested-link').text.replace('\n         ', '')
                             cleanedcompany = re.sub(r'\s+', ' ', company)
                         except:
-                            cleanedcompany = 'information unavailable'
+                            cleanedcompany = None
                         
                         try:
                             date_of_posting = content.find('time', {'class': 'job-search-card__listdate'}).get('datetime')
@@ -241,14 +241,14 @@ class LinkedIn(APIView):
                             try:
                                 date_of_posting = content.find('time', {'class': 'job-search-card__listdate--new'}).get('datetime')
                             except:
-                                date_of_posting = 'information unavailable'
+                                date_of_posting = None
                         
                         try:
                             location = content.find('span', class_="job-search-card__location").text.replace('\n         ', '')
                         except:
-                            location = 'information unavailable'
+                            location = None
                         
-                        components = {'title': cleanedtitle, 'company_name': cleanedcompany, 'location': location, 'date_of_posting': date_of_posting, 'link': link}
+                        components = {'internship_Title': cleanedtitle, 'organization': cleanedcompany, 'location': location, 'date_of_posting': date_of_posting, 'link': link,'professor':None,'internship_Type':None,'start_date':None,'end_date':None,'stipend':None,'eligibility':None,'no_Of_Openings':None,'skills':None,}
                         results.append(components)
                     
                     return results
@@ -268,6 +268,7 @@ class LinkedIn(APIView):
         
         except:
             return JsonResponse({'status':403,'message': 'Some error has occured'})
+
 
 
 def Internshala_scraper(final_url, pages):
